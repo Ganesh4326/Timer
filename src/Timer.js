@@ -6,11 +6,10 @@ import './timerstyles.css'
 const Timer = () => {
   const [animatedPercentage, setAnimatedPercentage] = useState(100);
   const [remainingSeconds, setRemainingSeconds] = useState(59);
-  const animationDuration = 60000; // 60 seconds
 
   useEffect(() => {
     const animationTimeout = setTimeout(() => {
-      setAnimatedPercentage((prevPercentage) => prevPercentage - 1);
+      setAnimatedPercentage((prevPercentage) => prevPercentage - 1.78);
     }, 1000);
 
     return () => {
@@ -38,13 +37,13 @@ const Timer = () => {
 
   const handleButtonClick = () => {
     if(remainingSeconds!=0 && remainingSeconds<=49)
-    setAnimatedPercentage((prevPercentage)=>prevPercentage+18.2)
+    setAnimatedPercentage((prevPercentage)=>prevPercentage+16.8)
     setRemainingSeconds((prevSeconds) => (prevSeconds < 50 ? prevSeconds + 10 : prevSeconds));
   };
 
   const handleButtonClickD = () => {
     if(remainingSeconds!=0 && remainingSeconds>=10){
-    setAnimatedPercentage((prevPercentage)=>prevPercentage-18.2)
+    setAnimatedPercentage((prevPercentage)=>prevPercentage-16.8)
     setRemainingSeconds((prevSeconds) => (prevSeconds >=10 ? prevSeconds - 10 : prevSeconds));
     }
   };
@@ -55,7 +54,7 @@ const Timer = () => {
   };
 
   return (
-    <div style={{ width: '150px', height: '150px' }}>
+    <div style={{ width: '150px', height: '150px', marginLeft:'45%', marginTop:'100px' }}>
       <CircularProgressbar
         value={animatedPercentage}
         text={formatTime(remainingSeconds)}
@@ -67,9 +66,11 @@ const Timer = () => {
           pathTransitionDuration: 0, // Disable path transition
         })}
       />
+      <div className='btnss'>
       <button className='sub-t1' onClick={handleButtonClick}>+ 10 sec</button>
       <button className='sub-t2' onClick={handleButtonClickD}>- 10 sec</button>
       <button className='sub-t3' onClick={handleButtonClickS}>skip</button>
+      </div>
     </div>
   );
 };
