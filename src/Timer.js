@@ -36,7 +36,7 @@ const Timer = () => {
   };
 
   const handleButtonClick = () => {
-    if(remainingSeconds!=0 && remainingSeconds<=49)
+    if(remainingSeconds>=0 && remainingSeconds<=49 )
     setAnimatedPercentage((prevPercentage)=>prevPercentage+16.8)
     setRemainingSeconds((prevSeconds) => (prevSeconds < 50 ? prevSeconds + 10 : prevSeconds));
   };
