@@ -1,73 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import './timerstyles.css';
-import { FaClock } from "react-icons/fa";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import React, { useEffect, useState } from 'react';
+import './timerstyles.css'
 
 const Timer = () => {
-  const [start, setStart] = useState(360);
-  const [c, setC] = useState(60);
-  const [inc, setInc] = useState(false);
+  const [animatedPercentage, setAnimatedPercentage] = useState(100);
+  const [remainingSeconds, setRemainingSeconds] = useState(59);
+  const animationDuration = 60000; // 60 seconds
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setStart(prevStart => (prevStart > 0 ? prevStart - 6 : prevStart));
-      setC(prevC => (prevC > 0 ? prevC - 1 : prevC));
+    const animationTimeout = setTimeout(() => {
+      setAnimatedPercentage((prevPercentage) => prevPercentage - 1);
     }, 1000);
 
-    if (start <= 0) {
-      clearInterval(interval);
-    }
+    return () => {
+      clearTimeout(animationTimeout);
+    };
+  }, [animatedPercentage]);
+
+  useEffect(() => {
+    const timeTimeout = setTimeout(() => {
+      if(remainingSeconds>=1)
+        setRemainingSeconds((prevSeconds) => prevSeconds - 1);
+    }, 1000);
 
     return () => {
-      clearInterval(interval);
+      clearTimeout(timeTimeout);
     };
-  }, [start, c, inc]);
+  }, [remainingSeconds]);
 
-  const handleIncrease = () => {
-    if (start > 0) {
-      setStart(prevStart => (prevStart <= 300 ? prevStart + 60 : prevStart));
-      setC(prevC => (prevC <= 50 ? prevC + 10 : prevC));
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = (seconds % 60).toString().padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
+
+  const handleButtonClick = () => {
+    if(remainingSeconds!=0 && remainingSeconds<=49)
+    setAnimatedPercentage((prevPercentage)=>prevPercentage+18.2)
+    setRemainingSeconds((prevSeconds) => (prevSeconds < 50 ? prevSeconds + 10 : prevSeconds));
+  };
+
+  const handleButtonClickD = () => {
+    if(remainingSeconds!=0 && remainingSeconds>=10){
+    setAnimatedPercentage((prevPercentage)=>prevPercentage-18.2)
+    setRemainingSeconds((prevSeconds) => (prevSeconds >=10 ? prevSeconds - 10 : prevSeconds));
     }
   };
 
-  const handleDecrease = () => {
-    setStart(prevStart => (prevStart >= 60 ? prevStart - 60 : prevStart));
-    setC(prevC => (prevC >= 10 ? prevC - 10 : prevC));
+  const handleButtonClickS = () => {
+    setAnimatedPercentage(0);
+    setRemainingSeconds(0);
   };
-
-  const handleSkip = () => {
-    setStart(0);
-    setC(0);
-  };
-
-  let progressStyle = {
-    background: `conic-gradient(#880bea ${start}deg, #ededed 0deg)`,
-  };
-
-  let valueText = c <= 9 ? `00:0${c}` : c === 60 ? `01:00` : `00:${c}`;
 
   return (
-    <div className='main-div'>
-      <div className="container">
-        <h3>Routine starting in ...</h3>
-        <h5 className='h5'>Subheading here</h5>
-        <div className="progress-circular" style={progressStyle}>
-          <span className="value">{valueText}</span>
-        </div>
-      </div>
-      <button className='sub-t1' onClick={handleIncrease}>+10sec</button>
-      <button className='sub-t2' onClick={handleDecrease}>-10sec</button>
-      <button className='sub-t3' onClick={handleSkip}>Skip</button>
-      <div className="c-main">
-        <h5 className='ch5'>Step <h3 className='ch4'>2</h3>/3</h5>
-        <div className='cleansing'>
-          <img className='img-src' src='https://cdn2.iconfinder.com/data/icons/beauty-salon-makeup-and-cosmetics/64/86-128.png' alt='cosmetic'></img>
-          <div>
-            <h4 className='cl-h6'>Cleansing</h4>
-            <div className='fa-c'><FaClock /><h5> 60 sec</h5></div>
-          </div>
-          <div className="htd"><h5>How to do?</h5></div>
-        </div>
-      </div>
+    <div style={{ width: '150px', height: '150px' }}>
+      <CircularProgressbar
+        value={animatedPercentage}
+        text={formatTime(remainingSeconds)}
+        styles={buildStyles({
+          pathColor: '#800080', // Purple color
+          textColor: '#f88',
+          trailColor: '#d6d6d6',
+          backgroundColor: '#3e98c7',
+          pathTransitionDuration: 0, // Disable path transition
+        })}
+      />
+      <button className='sub-t1' onClick={handleButtonClick}>+ 10 sec</button>
+      <button className='sub-t2' onClick={handleButtonClickD}>- 10 sec</button>
+      <button className='sub-t3' onClick={handleButtonClickS}>skip</button>
     </div>
   );
 };
