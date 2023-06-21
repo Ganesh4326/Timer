@@ -78,6 +78,7 @@
 
   }
   .sub-t1{
+    margin-left: 39%;
   }
   .sub-t2{
     margin-left:4%
@@ -87,8 +88,13 @@
   }
 
   .h5{
-    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-bottom: 0px;
     padding-top: 10px;
+  }
+
+  .h3{
+    margin-top: 30px;
   }
 
   .cleansing{
@@ -102,7 +108,7 @@
     height: 150px;
     border-radius: 15px;
     margin-left: 36%;
-    margin-top: 22px;
+    margin-top: 42px;
     background-color: rgb(196, 192, 192);
     padding: 20px;
   }
@@ -130,21 +136,8 @@
   }
   
 
-@media screen {
-  .container{
-    margin-top: 0;
-    position: relative;
-    width: 300px;
-    padding: 300px;
-    margin-left: 100px;
-    background-color: rgb(214, 36, 36);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 20px;
-  }
-}
 
-.btns{
+.btnss{
+  margin-top: 30px;
   display: flex;
 }
